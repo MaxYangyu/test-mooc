@@ -14,7 +14,7 @@ const actionCreators = {add, remove, addAsync};
  */
 
 @connect(
-    state => ({num: state}),
+    state => ({num: state.counter}),
 
     {add, remove, addAsync}
 )

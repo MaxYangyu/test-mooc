@@ -3,7 +3,7 @@ const REMOVE = '减钱';
 
 /*reducer*/
 
-export function counter(state = 0, active) {
+export function counter(state = 10, active) {
     switch (active.type) {
         case ADD:
             return state + 1

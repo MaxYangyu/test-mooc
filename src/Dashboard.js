@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import {Link, BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
+import {Link, Route, Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
+import {logout} from './Auth.redux'
 import App from './App'
 
 function Erying() {
@@ -10,6 +12,11 @@ function Qibinlian() {
     return <span>3</span>
 }
 
+@connect(
+    state => state.auth,
+    {logout}
+)
+
 class Dashboard extends Component {
     constructor(props) {
         super(props);
@@ -17,24 +24,30 @@ class Dashboard extends Component {
     }
 
     render() {
+        console.log(this.props.match);
+        const match =this.props.match;
+        const redirectToLogin = <Redirect to='/login'></Redirect>
+        const app = (
+            <div>
+                {this.props.isAuth ? <button onClick={this.props.logout}>注销</button> : null}
+                <ul>
+                    <li>
+                        <Link to={`${match.url}`}>1</Link>
+                    </li>
+                    <li>
+                        <Link to={`${match.url}/erying`}>2</Link>
+                    </li>
+                    <li>
+                        <Link to={`${match.url}/qibinlian`}>3</Link>
+                    </li>
+                </ul>
+                <Route path={`${match.url}`} exact component={App}/>
+                <Route path={`${match.url}/erying`} component={Erying}/>
+                <Route path={`${match.url}/qibinlian`} component={Qibinlian}/>
+            </div>
+        )
         return (
-
-                <div>
-                    <ul>
-                        <li>
-                            <Link to='/Dashboard/'>1</Link>
-                        </li>
-                        <li>
-                            <Link to='/Dashboard/erying'>2</Link>
-                        </li>
-                        <li>
-                            <Link to='/Dashboard/qibinlian'>3</Link>
-                        </li>
-                    </ul>
-                    <Route path='/Dashboard/' exact component={App}/>
-                    <Route path='/Dashboard/erying' component={Erying}/>
-                    <Route path='/Dashboard/qibinlian' component={Qibinlian}/>
-                </div>
+            this.props.isAuth ? app : redirectToLogin
         )
     }
 }

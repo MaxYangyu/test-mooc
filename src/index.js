@@ -1,16 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux'
-// import {counter} from "./index.redux"
 import reducers from './reducers'
-import {BrowserRouter, Route, Link, Redirect, Switch} from 'react-router-dom'
+import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom'
 import Auth from './Auth'
 import Dashboard from './Dashboard'
 
 const store = createStore(reducers, compose(
+    /*redux chrome插件的使用*/
     applyMiddleware(thunk),
     window.devToolsExtension ? window.devToolsExtension() : f => f
 ));
@@ -28,8 +27,6 @@ const store = createStore(reducers, compose(
 //         )
 //     }
 // }
-
-
 
 ReactDOM.render(
     (<Provider store={store}>
