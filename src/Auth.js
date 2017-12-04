@@ -19,7 +19,7 @@ class Auth extends Component {
     }
 
     componentWillMount() {
-       this.props.getUserData()
+       this.props.getUserData()//触发react-redux里的axios方法
     }
 
     render() {
