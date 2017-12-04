@@ -5,8 +5,12 @@ import thunk from 'redux-thunk';
 import {Provider} from 'react-redux'
 import reducers from './reducers' //通过redux里combineReducers方法合并的reducer
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom'
+/*
 import Auth from './Auth'
 import Dashboard from './Dashboard'
+*/
+import Login from './container/login/login'
+import Register from './container/register/register'
 import './config' //axios的拦截器 interceptors
 
 const store = createStore(reducers, compose(
@@ -18,12 +22,10 @@ const store = createStore(reducers, compose(
 ReactDOM.render(
     (<Provider store={store}>
         <BrowserRouter>
-            <Switch>
-                {/*只渲染命中的第一个Route*/}
-                <Route path='/login' exact component={Auth}/>
-                <Route path='/Dashboard' component={Dashboard}/>
-                <Redirect to='/Dashboard'></Redirect> {/*自动跳转*/}
-            </Switch>
+            <div>
+                <Route path='/login' component={Login}/>
+                <Route path='/register' component={Register}/>
+            </div>
         </BrowserRouter>
     </Provider>),
     document.getElementById('root')
