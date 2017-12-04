@@ -1,27 +1,31 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {login} from './Auth.redux'
-import axios from 'axios'
+import {login,getUserData} from './Auth.redux'
 
 @connect(
     state => state.auth,
-    {login}
+    {login,getUserData}
 )
 
 class Auth extends Component {
-    componentWillMount() {
-        axios.get('/data').then(res => console.log(res))
-    }
+
 
     constructor(props) {
         super(props);
+        this.state = {
+            data: []
+        };
+    }
 
+    componentWillMount() {
+       this.props.getUserData()
     }
 
     render() {
         return (
             <div>
+                <h2>{this.props.name}-{this.props.age}</h2>
                 {this.props.isAuth ? <Redirect to='./Dashboard'></Redirect> : null}
                 <h2>暂无权限,请稍后</h2>
                 <button onClick={this.props.login}>登录</button>

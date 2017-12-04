@@ -8,6 +8,7 @@ import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom'
 import Auth from './Auth'
 import Dashboard from './Dashboard'
 
+
 const store = createStore(reducers, compose(
     /*redux chrome插件的使用*/
     applyMiddleware(thunk),
