@@ -14,9 +14,9 @@ import Dashboard from './Dashboard'
 */
 import Login from './container/login/login'
 import Register from './container/register/register'
-import AuthRoute from './component/authroute/authroute'
-import './config'
-import Auth from "./Auth"; //axios的拦截器 interceptors
+import AuthRoute from './component/authroute/authroute'/*效验是否登录*/
+import './index.css'
+import './config'    //axios的拦截器 interceptors
 
 const store = createStore(reducers, compose(
     /*redux chrome插件的使用 监控所有的reducer数据的变化*/
@@ -28,7 +28,7 @@ ReactDOM.render(
     (<Provider store={store}>
         <BrowserRouter>
             <div>
-                <AuthRoute></AuthRoute>
+                <AuthRoute></AuthRoute> {/*效验是否登录*/}
                 <Route path='/login' exact component={Login}/>
                 <Route path='/register' component={Register}/>
             </div>
