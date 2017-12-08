@@ -38,7 +38,7 @@ class Login extends Component {
     render() {
         return (
             <div>
-                {/*判断是否注册 如果注册成功 跳转地址*/}
+                {/*判断是否登录 如果登录成功 跳转地址*/}
                 {this.props.redirectTo ? <Redirect to={this.props.redirectTo}/> : null}
                 <Logo></Logo>
                 <WingBlank>

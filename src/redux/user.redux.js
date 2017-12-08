@@ -1,9 +1,10 @@
 import axios from 'axios';
-import {getRedirectPath} from '../util'
+import {getRedirectPath} from '../util' //根据用户信息 跳转地址
 
 const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 const ERROT_MSG = 'ERROT_MSG';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+const LOAD_DATA = 'LOAD_DATA';
 const initState = {
     redirectTo: '',
     isAuth: '',
@@ -20,6 +21,8 @@ export function user(state = initState, action) {
             return {...state, redirectTo: getRedirectPath(action.payload), msg: '', isAuth: true, ...action.payload};
         case LOGIN_SUCCESS:
             return {...state, redirectTo: getRedirectPath(action.payload), msg: '', isAuth: true, ...action.payload};
+        case LOAD_DATA:
+            return {...state, isAuth: true, ...action.payload};
         case ERROT_MSG:
             return {...state, isAuth: false, msg: action.msg};
         default:
@@ -27,6 +30,7 @@ export function user(state = initState, action) {
     }
 
 }
+
 
 function errorMsg(msg) {
     return {msg, type: ERROT_MSG}
@@ -46,6 +50,14 @@ function loginSuccess(data) {
     }
 }
 
+/**/
+export function loadData(userinfo) {
+    console.log(loadData)
+    return {type: LOAD_DATA, payload: userinfo}
+}
+
+
+/*登录*/
 export function login({name, pwd}) {
     if (!name || !pwd) {
         return errorMsg('用户名密码必须输入')
@@ -62,7 +74,7 @@ export function login({name, pwd}) {
     }
 }
 
-
+/*注册*/
 export function regisger({name, pwd, repeatpwd, type}) {
     if (!name || !pwd || !type) {
         return errorMsg('用户名密码必须输入')
