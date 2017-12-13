@@ -1,13 +1,11 @@
 import axios from 'axios';
 import {getRedirectPath} from '../util' //根据用户信息 跳转地址
 
-const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+const AUTH_SUCCESS = 'AUTH_SUCCESS';
 const ERROT_MSG = 'ERROT_MSG';
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOAD_DATA = 'LOAD_DATA';
 const initState = {
     redirectTo: '',
-    isAuth: '',
     name: '',
     pwd: '',
     type: '',
@@ -17,10 +15,8 @@ const initState = {
 export function user(state = initState, action) {
     console.log(state, action);
     switch (action.type) {
-        case REGISTER_SUCCESS:
-            return {...state, redirectTo: getRedirectPath(action.payload), msg: '', isAuth: true, ...action.payload};
-        case LOGIN_SUCCESS:
-            return {...state, redirectTo: getRedirectPath(action.payload), msg: '', isAuth: true, ...action.payload};
+        case AUTH_SUCCESS:
+            return {...state, redirectTo: getRedirectPath(action.payload), msg: '', ...action.payload};
         case LOAD_DATA:
             return {...state, isAuth: true, ...action.payload};
         case ERROT_MSG:
@@ -31,26 +27,18 @@ export function user(state = initState, action) {
 
 }
 
+function authSuccess(data) {
+    return {
+        type: AUTH_SUCCESS,
+        payload: data
+    }
+}
 
 function errorMsg(msg) {
     return {msg, type: ERROT_MSG}
 }
 
-function registerSuccess(data) {
-    return {
-        type: REGISTER_SUCCESS,
-        payload: data
-    }
-}
-
-function loginSuccess(data) {
-    return {
-        type: LOGIN_SUCCESS,
-        payload: data
-    }
-}
-
-/**/
+/*检查 有登录的返回信息*/
 export function loadData(userinfo) {
     console.log(loadData)
     return {type: LOAD_DATA, payload: userinfo}
@@ -66,7 +54,7 @@ export function login({name, pwd}) {
         axios.post('/user/login', {name, pwd})
             .then(res => {
                 if (res.status == 200 && res.data.code === 0) {
-                    dispatch(loginSuccess(res.data.data))
+                    dispatch(authSuccess(res.data.data))
                 } else {
                     dispatch(errorMsg(res.data.msg))
                 }
@@ -86,7 +74,23 @@ export function regisger({name, pwd, repeatpwd, type}) {
         axios.post('/user/register', {name, pwd, type})
             .then(res => {
                 if (res.status == 200 && res.data.code === 0) {
-                    dispatch(registerSuccess({name, pwd, type}))
+                    dispatch(authSuccess({name, pwd, type}))
+                } else {
+                    dispatch(errorMsg(res.data.msg))
+                }
+            })
+    }
+
+}
+
+
+/*bossinfo的信息*/
+export function update(data) {
+    return dispatch => {
+        axios.post('/user/update', data)
+            .then(res => {
+                if (res.status == 200 && res.data.code === 0) {
+                    dispatch(authSuccess(res.data.data))
                 } else {
                     dispatch(errorMsg(res.data.msg))
                 }

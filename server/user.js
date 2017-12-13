@@ -5,7 +5,9 @@ const utils = require('utility');
 const model = require('./model');
 const User = model.getModel('user');
 
-const _filter = {'pwd': 0, '__v': 0}
+/*过滤 不返回的作用*/
+const _filter = {'pwd': 0, '__v': 0};
+
 //查询所有的list
 Router.get('/list', function (req, res) {
     //清除User的所有的数据
@@ -59,6 +61,22 @@ Router.post('/register', function (req, res) {
             }
             return res.json({code: 0})
         })
+    })
+})
+
+//更新信息
+Router.post('/update', function (req, res) {
+    const user_id = req.cookies.user_id
+    if (!user_id) {
+        return res.json({code: 1, msg: '请先登录'})
+    }
+    const body = req.body;
+    User.findByIdAndUpdate(user_id, body, function (e, d) {
+        const data = Object.assign({}, {
+            name: d.name,
+            type: d.type
+        }, body);
+        return res.json({code: 0, data: data})
     })
 })
 
