@@ -1,8 +1,9 @@
 const express = require('express');
 const Router = express.Router();
 const utils = require('utility');
-
+/*引入mongo*/
 const model = require('./model');
+/*选择哪个库*/
 const User = model.getModel('user');
 
 /*过滤 不返回的作用*/
@@ -10,12 +11,14 @@ const _filter = {'pwd': 0, '__v': 0};
 
 //查询所有的list
 Router.get('/list', function (req, res) {
+    const type = req.query.type;
+
     //清除User的所有的数据
     /*User.remove({},function (err,doc) {})*/
 
     //查询User的所有的数据
-    User.find({}, function (err, doc) {
-        return res.json(doc)
+    User.find({type},_filter, function (err, doc) {
+        return res.json({code:0,data:doc})
     })
 })
 

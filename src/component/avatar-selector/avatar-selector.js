@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 class AvatarSelector extends Component {
     /*类型检查*/
-    static PropTypes = {
+    static propTypes = {
         /*isRequired为必需*/
         selectAvatar: PropTypes.func.isRequired
     }
@@ -19,7 +19,7 @@ class AvatarSelector extends Component {
             .split(',')
             .map(v => ({
                 icon: require(`../img/${v}.png`),
-                text: `name${v}`
+                text: v
             }))
         const gridHeader = this.state.icon ? (
                 <div>

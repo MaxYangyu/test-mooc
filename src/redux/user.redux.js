@@ -4,6 +4,7 @@ import {getRedirectPath} from '../util' //根据用户信息 跳转地址
 const AUTH_SUCCESS = 'AUTH_SUCCESS';
 const ERROT_MSG = 'ERROT_MSG';
 const LOAD_DATA = 'LOAD_DATA';
+const LOGOUT = 'LOGOUT';
 const initState = {
     redirectTo: '',
     name: '',
@@ -13,7 +14,6 @@ const initState = {
 
 
 export function user(state = initState, action) {
-    console.log(state, action);
     switch (action.type) {
         case AUTH_SUCCESS:
             return {...state, redirectTo: getRedirectPath(action.payload), msg: '', ...action.payload};
@@ -21,6 +21,8 @@ export function user(state = initState, action) {
             return {...state, isAuth: true, ...action.payload};
         case ERROT_MSG:
             return {...state, isAuth: false, msg: action.msg};
+        case LOGOUT:
+            return {...initState, redirectTo: '/login'};
         default:
             return state
     }
@@ -40,7 +42,6 @@ function errorMsg(msg) {
 
 /*检查 有登录的返回信息*/
 export function loadData(userinfo) {
-    console.log(loadData)
     return {type: LOAD_DATA, payload: userinfo}
 }
 
@@ -97,4 +98,9 @@ export function update(data) {
             })
     }
 
+}
+
+/*注销*/
+export function logoutSubmit() {
+    return {type: LOGOUT}
 }

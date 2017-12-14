@@ -5,7 +5,7 @@ mongoose.connection.on('connected', function () {
 });
 const model = {
     user: {
-        //require 为必须
+        //require 为必须选项
         'name': {type: String, require: true},
         'pwd': {type: String, require: true},
         'type': {type: String, require: true},

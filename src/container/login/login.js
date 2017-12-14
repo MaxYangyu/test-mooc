@@ -31,7 +31,6 @@ class Login extends Component {
     }
 
     handleLogin() {
-        console.log(this.state)
         this.props.login(this.state)
     }
 
@@ -39,7 +38,8 @@ class Login extends Component {
         return (
             <div>
                 {/*判断是否登录 如果登录成功 跳转地址*/}
-                {this.props.redirectTo ? <Redirect to={this.props.redirectTo}/> : null}
+                {this.props.redirectTo && this.props.redirectTo != '/login' ?
+                    <Redirect to={this.props.redirectTo}/> : null}
                 <Logo></Logo>
                 <WingBlank>
                     <List>

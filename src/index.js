@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 //通过redux里combineReducers方法合并的reducer
 import reducers from './reducers'
 
-import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom'
+import {BrowserRouter, Route,  Switch} from 'react-router-dom'
 /*
 import Auth from './Auth'
 import Dashboard from './Dashboard'
