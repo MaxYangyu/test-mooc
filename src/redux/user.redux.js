@@ -45,7 +45,6 @@ export function loadData(userinfo) {
     return {type: LOAD_DATA, payload: userinfo}
 }
 
-
 /*登录*/
 export function login({name, pwd}) {
     if (!name || !pwd) {
