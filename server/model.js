@@ -21,14 +21,19 @@ const model = {
 
     },
     chat: {
-
+        'chatid': {type: String, require: true},
+        'from': {type: String, require: true},
+        'to': {type: String, require: true},
+        'read': {type: Boolean, default: false},
+        'content': {type: String, require: true, default: ''},
+        'create_time': {type: Number, default: new Date().getTime()}
     },
 }
 for (let m in model) {
     mongoose.model(m, new mongoose.Schema(model[m]))
 }
 module.exports = {
-    getModel:function (name) {
+    getModel: function (name) {
         return mongoose.model(name)
     }
 }
