@@ -6,10 +6,10 @@ const initState = {
 };
 
 
-export  function chatuser(state = initState, active) {
-    switch (active.type) {
+export  function chatuser(state = initState, action) {
+    switch (action.type) {
         case USER_LIST:
-            return {...state,userList:active.payload};
+            return {...state,userList:action.payload};
         default:
             return state
     }

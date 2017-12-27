@@ -5,7 +5,7 @@ const utils = require('utility');
 const model = require('./model');
 /*选择哪个库*/
 const User = model.getModel('user');
-
+const Chat = model.getModel('chat');
 /*过滤 不返回的作用*/
 const _filter = {'pwd': 0, '__v': 0};
 
@@ -17,14 +17,14 @@ Router.get('/list', function (req, res) {
     /*User.remove({},function (err,doc) {})*/
 
     //查询User的所有的数据
-    User.find({type},_filter, function (err, doc) {
-        return res.json({code:0,data:doc})
+    User.find({type}, _filter, function (err, doc) {
+        return res.json({code: 0, data: doc})
     })
-})
+});
 
 //用户信息
 Router.get('/info', function (req, res) {
-    const {user_id} = req.cookies
+    const {user_id} = req.cookies;
     if (!user_id) {
         return res.json({code: 1})
     }
@@ -38,9 +38,26 @@ Router.get('/info', function (req, res) {
     })
 });
 
+//获取chat
+Router.get('/getmsglist', function (req, res) {
+    const name = req.cookies.user_id;
+    User.find({}, function (err, doc) {
+        let users = {};
+        doc.forEach(v => {
+            users[v._id] = {name: v.name, avatar: v.avatar}
+        });
+        Chat.find({'$or': [{from: name}, {to: name}]}, function (err, doc) {
+            if (!err) {
+                return res.json({code: 0, msgs: doc, users: users})
+            }
+        })
+    })
+
+});
+
 //登录
 Router.post('/login', function (req, res) {
-    const {name, pwd} = req.body
+    const {name, pwd} = req.body;
     User.findOne({name, pwd: md5Pwd(pwd)}, _filter, function (err, doc) {
         if (!doc) {
             return res.json({code: 1, msg: '用户名或密码错误'})
@@ -48,7 +65,7 @@ Router.post('/login', function (req, res) {
         res.cookie('user_id', doc._id)
         return res.json({code: 0, data: doc})
     })
-})
+});
 
 //注册
 Router.post('/register', function (req, res) {
@@ -65,7 +82,7 @@ Router.post('/register', function (req, res) {
             return res.json({code: 0})
         })
     })
-})
+});
 
 //更新信息
 Router.post('/update', function (req, res) {
@@ -81,7 +98,7 @@ Router.post('/update', function (req, res) {
         }, body);
         return res.json({code: 0, data: data})
     })
-})
+});
 
 //加密算法
 function md5Pwd(pwd) {

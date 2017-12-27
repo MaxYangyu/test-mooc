@@ -26,7 +26,7 @@ const model = {
         'to': {type: String, require: true},
         'read': {type: Boolean, default: false},
         'content': {type: String, require: true, default: ''},
-        'create_time': {type: Number, default: new Date().getTime()}
+        'create_time': {type: Number, default:Date.now}
     },
 }
 for (let m in model) {

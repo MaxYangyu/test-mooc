@@ -1,8 +1,15 @@
 import React, {Component} from 'react'
-import {List, InputItem} from 'antd-mobile'
+import {List, InputItem, NavBar, Icon} from 'antd-mobile'
+import {connect} from 'react-redux'
+import {getMsgList, sendMsg, recvMsg} from '../../redux/chat.redux'
 import io from 'socket.io-client'
+
 const socket = io('ws://localhost:803');
 
+@connect(
+    state => state,
+    {getMsgList, sendMsg, recvMsg}
+)
 class Chat extends Component {
     constructor(props) {
         super(props);
@@ -13,26 +20,60 @@ class Chat extends Component {
     }
 
     componentDidMount() {
-        socket.on('recvmsg', (data) => {
-            this.setState({
-                msg: [...this.state.msg, data.text]
-            })
-        })
+        if (!this.props.chat.chatmsg.length) {
+            this.props.getMsgList();
+            this.props.recvMsg();
+        }
     }
 
     handleSubmit() {
-        socket.emit('sendmsg', {text: this.state.text})
+        /*  socket.emit('sendmsg', {text: this.state.text})*/
+        /*  this.setState({
+             text: ''
+         })*/
+        const from = this.props.user._id;
+        const to = this.props.match.params.name;
+        const msg = this.state.text;
+        this.props.sendMsg(from, to, msg);
         this.setState({
             text: ''
         })
     }
 
     render() {
-        console.log(this.props);
+        const name = this.props.match.params.name;
+        const users = this.props.chat.users;
+        if (!users[name]) {
+            return null
+        }
         return (
-            <div>
-                {this.state.msg.map(v => {
-                    return <p key={v}>{v}</p>
+            <div id='chat-page'>
+                <NavBar
+                    mode='dark'
+                    icon={<Icon type="left"/>}
+                    onLeftClick={() => {
+                        this.props.history.goBack()
+                    }}
+                >
+                    {users[name].name}
+                </NavBar>
+                {this.props.chat.chatmsg.map(v => {
+                    const avatar = require(`../img/${users[v.from].avatar}.png`)
+                    return v.from == name ? (
+                        <List key={v._id}>
+                            <List.Item
+                                thumb={avatar}
+                            >{v.content}</List.Item>
+                        </List>
+                    ) : (
+                        <List key={v._id}>
+                            <List.Item
+                                extra={<img src={avatar}/>}
+                                className='chat-me'>
+                                {v.content}
+                            </List.Item>
+                        </List>
+                    )
                 })}
                 <div className='stick-footer'>
                     <List>
