@@ -14,6 +14,12 @@ class AvatarSelector extends Component {
         this.state = {}
     }
 
+    componentDidMount() {
+        setTimeout(function () {
+           dispatchEvent(new Event('resize'))
+        },0)
+    }
+
     render() {
         const avatarList = 'boy,girl,man,woman,bull,chick,crab,hedgehog,hippopotamus,koala,lemur,pig,tiger,whale,zebra'
             .split(',')

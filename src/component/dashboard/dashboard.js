@@ -18,12 +18,15 @@ function Msg() {
 )
 class Dashboard extends React.Component {
     componentDidMount() {
-        this.props.getMsgList();
-        this.props.recvMsg();
+        if(!this.props.chat.chatmsg.length){
+            this.props.getMsgList();
+            this.props.recvMsg();
+        }
+
     }
     render() {
-        const {pathname} = this.props.location
-        const user = this.props.user
+        const {pathname} = this.props.location;
+        const user = this.props.user;
         const navList = [
             {
                 path: '/boss',
@@ -55,7 +58,7 @@ class Dashboard extends React.Component {
                 title: '个人中心',
                 component: User
             }
-        ]
+        ];
 
 
         return (
