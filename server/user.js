@@ -9,6 +9,9 @@ const Chat = model.getModel('chat');
 /*过滤 不返回的作用*/
 const _filter = {'pwd': 0, '__v': 0};
 
+/*Chat.remove({},function(e,d){
+
+})*/
 //查询所有的list
 Router.get('/list', function (req, res) {
     const type = req.query.type;
@@ -51,6 +54,20 @@ Router.get('/getmsglist', function (req, res) {
                 return res.json({code: 0, msgs: doc, users: users})
             }
         })
+    })
+
+});
+
+Router.post('/readmsg', function (req, res) {
+    const userid = req.cookies.user_id;
+    const {from} = req.body;
+    console.log(userid, from);
+    Chat.update({from, to: userid}, {'$set': {read: true}}, function (err, doc) {
+        console.log(doc)
+        if (!err) {
+            return res.json({code: 0, num: doc.nModified})
+        }
+        return res.json({code: 1, msg: '修改失败'})
     })
 
 });
